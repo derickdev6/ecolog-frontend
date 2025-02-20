@@ -5,7 +5,12 @@
   <section class="hero">
     <div class="hero-text">
       <h1>EcoLog</h1>
-      <p>Actividades por el bien ecologico de nuestra isla</p>
+      <p>Actividades por el bien ecológico de nuestra isla</p>
+      <div class="link-set">
+        <a href="">Empresas</a>
+        <a href="">Proyectos</a>
+        <a href="">Actividades</a>
+      </div>
     </div>
     <div class="hero-images">
       <img src="@/assets/images/img1.jpg" class="img img1" />
@@ -18,44 +23,61 @@
   .hero {
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    height: 90vh;
-    padding: 0 0rem;
-
+    justify-content: space-evenly;
+    height: 80vh;
+    padding: 2rem;
     background-color: #003b2c;
-  
+    
     .hero-text {
-      min-width: 40rem;
-    //   width: 30%;
       color: #f1f1f1;
-    //   background-color: #ffffff22;
-
-      h1 {
-        font-size: 10rem;
-        margin-bottom: 1rem;
-      }
-      p{
-        font-size: 1.8rem;
+      h1 { font-size: 6rem; margin-bottom: 1rem; }
+      p { font-size: 1.8rem; }
+      .link-set {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        a {
+          color: #f1f1f1;
+          text-decoration: none;
+          font-size: 1.6rem;
+          padding: 1rem 1.5rem;
+          border-radius: 1rem;
+          background-color: #ffffff22;
+          &:hover { background-color: #ffffff44; }
+        }
       }
     }
-  
     .hero-images {
-      min-width: 60rem;
-    //   width: 20%;
       display: flex;
       justify-content: center;
       align-items: center;
-    //   background-color: #ffffff22;
-  
-      .img {
-        width: 32rem;
-        border-radius: 2rem;
-      }
-  
-      .img1 { top: 0; left: 0; transform: rotate(-10deg); }
-      .img2 { top: 50px; left: 50px; transform: rotate(5deg); }
-      .img3 { top: 100px; left: 100px; transform: rotate(-5deg); }
+      gap: 1rem;
+      .img { width: 20vw; border-radius: 3rem; }
     }
   }
-  
+  @media (max-width: 768px) {
+    .hero {
+      height: auto;
+      flex-direction: column;
+      text-align: center;
+      .hero-text {
+        h1 { font-size: 4rem; }
+        p { font-size: 1.4rem; }
+        .link-set {
+          gap: 2rem;
+          flex-direction: column;
+          align-items: center;
+          a { 
+            width: 18rem;
+            padding: 1.5rem 0rem;
+          }
+        }
+      }
+      .hero-images {
+        gap: 2vw;
+        padding: 5rem 0rem;
+        .img { width: 35vw; }
+      }
+    }
+  }
 </style>
