@@ -7,9 +7,9 @@
       <h1>EcoLog</h1>
       <p>Actividades por el bien ecológico de nuestra isla</p>
       <div class="link-set">
-        <a href="">Empresas</a>
-        <a href="">Proyectos</a>
-        <a href="">Actividades</a>
+        <router-link to="/empresas">Empresas</router-link>
+        <router-link to="/proyectos">Proyectos</router-link>
+        <router-link to="/actividades">Actividades</router-link>
       </div>
     </div>
     <div class="hero-images">
@@ -43,6 +43,7 @@
           padding: 1rem 1.5rem;
           border-radius: 1rem;
           background-color: #ffffff22;
+          transition: .2s;
           &:hover { background-color: #ffffff44; }
         }
       }
@@ -52,7 +53,19 @@
       justify-content: center;
       align-items: center;
       gap: 1rem;
-      .img { width: 20vw; border-radius: 3rem; }
+      .img { 
+        filter: brightness(85%);
+        width: 20vw; 
+        border-radius: 3rem;
+        transition: .5s;
+        // Hover effect
+        // When hovering, the image will float up, and glow
+        &:hover {
+          transform: translate(0, -1rem);
+          filter: brightness(100%);
+          box-shadow: 0rem 0rem 2rem 0.5rem #ffffff22;
+        }
+      }
     }
   }
   @media (max-width: 768px) {
@@ -76,7 +89,9 @@
       .hero-images {
         gap: 2vw;
         padding: 5rem 0rem;
-        .img { width: 35vw; }
+        .img { 
+          width: 35vw;
+        }
       }
     }
   }
