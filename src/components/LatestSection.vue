@@ -27,16 +27,16 @@ const activities = ref([
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
-  background-color: #f1f1f1;
+  padding: 6rem 0;
+  // background-color: #f1f1f1;
   .activity-list {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 6rem;
   }
-  h2 { font-size: 3rem; margin: 5rem 0; }
+  h2 { font-size: 3rem; margin-bottom: 6rem; }
 }
 
 </style>

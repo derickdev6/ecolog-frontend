@@ -1,24 +1,24 @@
 <script setup>
-defineProps({ activity: Object });
+defineProps({ company: Object });
 </script>
 
 <template>
-  <a href="" class="activity-card">
-    <img :src="activity.image" />
-    <div class="activity-info">
-      <h3>{{ activity.title }}</h3>
-      <small>{{ activity.project }} - {{ activity.company }}</small>
-      <p>{{ activity.description }}</p>
+  <a href="" class="company-card">
+    <img :src="company.image" />
+    <div class="company-info">
+      <h3>{{ company.name }}</h3>
+      <small>{{ company.ceo }}</small>
+      <p>{{ company.description }}</p>
     </div>
   </a>
 </template>
 
 <style scoped lang="scss">
-  .activity-card {
+  .company-card {
     text-decoration: none;
     color: #000000;
-    width: 60%;
-    min-width: 60rem;
+    width: 35%;
+    min-width: 35rem;
     min-height: 20rem;
     display: flex;
     padding: 2rem;
@@ -26,7 +26,7 @@ defineProps({ activity: Object });
     align-items: center;
     gap: 2rem;
     overflow: hidden;
-    box-shadow: 0rem 0rem 2rem .5rem #003b2c3a;
+    box-shadow: 0rem 0rem 2rem .5rem #003b2c11;
     transition: .5s;
     &:hover {
       transform: translateY(-.2rem);
@@ -36,7 +36,7 @@ defineProps({ activity: Object });
       width: 16rem;
       border-radius: 2rem;
     }
-    .activity-info {
+    .company-info {
       flex: 1;
       h3 { font-size: 2.4rem; }
       small { font-size: 1.2rem; color: #666; }
@@ -48,7 +48,7 @@ defineProps({ activity: Object });
     }
   }
   @media (max-width: 768px) {
-    .activity-card {
+    .company-card {
       width: 80%;
       // max-height: 40rem;
       flex-direction: column;

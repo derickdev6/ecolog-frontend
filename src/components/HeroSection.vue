@@ -58,12 +58,14 @@
         width: 20vw; 
         border-radius: 3rem;
         transition: .5s;
+        box-shadow: 0rem 0rem 2rem 0.5rem #ffffff1f;
         // Hover effect
         // When hovering, the image will float up, and glow
         &:hover {
-          transform: translate(0, -1rem);
+          transform: translate(0, -.5rem);
+          transform: perspective(100rem ) rotateY(-5deg) rotateX(2deg);
           filter: brightness(100%);
-          box-shadow: 0rem 0rem 2rem 0.5rem #ffffff22;
+          box-shadow: 0rem 0rem 2rem 0.5rem #ffffff32;
         }
       }
     }
