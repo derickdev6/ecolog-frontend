@@ -1,13 +1,13 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-import CompanyCard from "@/components/CompanyCard.vue";
-import FooterComponent from "@/components/FooterComponent.vue";
-import NavBar from "@/components/NavBar.vue";
+import Navbar from "@/components/layout/Navbar.vue";
+import Footer from "@/components/layout/Footer.vue";
+import CompanyCard from "@/components/companies/CompanyCard.vue";
 
-const empresas = ref([]);
+const companies = ref([]);
 // Simulando el fetch de datos
-empresas.value = [
+companies.value = [
   {
     id: 1,
     name: "Empresa 1",
@@ -65,7 +65,7 @@ onMounted(async () => {
     const { data } = await axios.get("http://localhost:5001/api/empresas");
     if (data.length > 0) {
       console.log("Data fetched");
-      empresas.value = data;
+      companies.value = data;
     } else {
       console.log("No data fetched");
     }
@@ -76,18 +76,18 @@ onMounted(async () => {
 </script>
 
 <template>
-  <NavBar />
+  <Navbar />
 
   <h1>Empresas</h1>
-  <div class="empresas-list">
+  <div class="companies">
     <CompanyCard
-      v-for="empresa in empresas"
+      v-for="empresa in companies"
       :key="empresa.id"
       :company="empresa"
     />
   </div>
 
-  <FooterComponent />
+  <Footer />
 </template>
 
 <style lang="scss" scoped>
@@ -97,7 +97,7 @@ h1 {
   margin: 4rem 0;
 }
 
-.empresas-list {
+.companies {
   margin: 4rem 0;
   display: flex;
   flex-wrap: wrap;

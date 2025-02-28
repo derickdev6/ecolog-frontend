@@ -1,24 +1,24 @@
 <script setup>
-defineProps({ activity: Object });
+defineProps({ project: Object });
 </script>
 
 <template>
-  <a href="" class="activity-element">
+  <a href="" class="project-item">
     <li>
-      <img :src="activity.image" />
-      <div class="activity-info">
-        <h3>{{ activity.title }}</h3>
-        <small>{{ activity.project }} - {{ activity.company }}</small>
+      <img :src="project.image" />
+      <div class="project-info">
+        <h3>{{ project.title }}</h3>
+        <small>{{ project.company }}</small>
         <br />
-        <small> {{ activity.date }}</small>
+        <small> {{ project.date }}</small>
       </div>
-      <p>{{ activity.description }}</p>
+      <p>{{ project.description }}</p>
     </li>
   </a>
 </template>
 
 <style scoped lang="scss">
-.activity-element {
+.project-item {
   display: flex;
   align-items: center;
   width: 100%;
@@ -41,7 +41,7 @@ defineProps({ activity: Object });
     img {
       width: 10rem;
     }
-    .activity-info {
+    .project-info {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -65,12 +65,12 @@ defineProps({ activity: Object });
   }
 }
 @media (max-width: 768px) {
-  .activity-element {
+  .project-item {
     li {
       img {
         width: 8rem;
       }
-      .activity-info {
+      .project-info {
         h3 {
           font-size: 1.5rem;
         }

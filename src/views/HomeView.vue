@@ -1,14 +1,14 @@
 <script setup>
-import HeroSection from "@/components/HeroSection.vue";
-import LatestSection from "@/components/LatestSection.vue";
-import FooterComponent from "@/components/FooterComponent.vue";
+import HeroSection from "@/components/layout/HeroSection.vue";
+import LatestActivities from "@/components/activities/LatestActivities.vue";
+import Footer from "@/components/layout/Footer.vue";
 </script>
 
 <template>
   <div>
     <HeroSection />
-    <LatestSection />
-    <FooterComponent />
+    <LatestActivities />
+    <Footer />
   </div>
 </template>
 

@@ -1,12 +1,12 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-import NavBar from "@/components/NavBar.vue";
-import FooterComponent from "@/components/FooterComponent.vue";
-import ProjectElement from "@/components/ProjectElement.vue";
+import Navbar from "@/components/layout/Navbar.vue";
+import Footer from "@/components/layout/Footer.vue";
+import ProjectItem from "@/components/projects/ProjectItem.vue";
 
 // Simulate a request to the API
-const proyectos = ref([
+const projects = ref([
   {
     id: 1,
     title: "EcoProjectt",
@@ -50,7 +50,7 @@ onMounted(async () => {
     const { data } = await axios.get("http://localhost:5001/api/proyectos");
     if (data.length > 0) {
       console.log("Data fetched");
-      proyectos.value = data;
+      projects.value = data;
     } else {
       console.log("No data fetched");
     }
@@ -61,22 +61,22 @@ onMounted(async () => {
 </script>
 
 <template>
-  <NavBar />
-  <div class="proyectos">
+  <Navbar />
+  <div class="projects">
     <h1>Proyectos</h1>
     <ul>
-      <ProjectElement
-        v-for="project in proyectos"
+      <ProjectItem
+        v-for="project in projects"
         :key="project.id"
         :project="project"
       />
     </ul>
   </div>
-  <FooterComponent />
+  <Footer />
 </template>
 
 <style scoped lang="scss">
-.proyectos {
+.projects {
   h1 {
     text-align: center;
     font-size: 3rem;

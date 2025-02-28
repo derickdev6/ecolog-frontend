@@ -19,7 +19,7 @@ defineProps({ company: Object });
         target="_blank"
       >
         <img
-          :src="`/src/assets/icon/${contact.name}.png`"
+          :src="`/src/assets/icons/${contact.name}.png`"
           :alt="contact.name"
         />
       </a>
@@ -95,7 +95,6 @@ defineProps({ company: Object });
     text-align: center;
     min-width: auto;
     .company-links {
-      justify-content: center;
       flex-direction: row;
     }
   }

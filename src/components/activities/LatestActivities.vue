@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import ActivityCard from "@/components/ActivityCard.vue";
+import ActivityCard from "@/components/activities/ActivityCard.vue";
 
 const activities = ref([
   {

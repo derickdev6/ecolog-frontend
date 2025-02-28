@@ -10,6 +10,7 @@
 
 <style scoped lang="scss">
 .footer {
+  height: 8rem;
   text-align: center;
   padding: 1.5rem;
   background: #333;

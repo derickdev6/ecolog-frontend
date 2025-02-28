@@ -1,12 +1,12 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-import NavBar from "@/components/NavBar.vue";
-import FooterComponent from "@/components/FooterComponent.vue";
-import ActivityElement from "@/components/ActivityElement.vue";
+import Navbar from "@/components/layout/Navbar.vue";
+import ActivityItem from "@/components/activities/ActivityItem.vue";
+import Footer from "@/components/layout/Footer.vue";
 
 // Simulate a request to the API
-const actividades = ref([
+const activities = ref([
   {
     id: 1,
     title: "Evento Tech",
@@ -162,7 +162,7 @@ onMounted(async () => {
     const { data } = await axios.get("http://localhost:5001/api/actividades");
     if (data.length > 0) {
       console.log("Data fetched");
-      actividades.value = data;
+      activities.value = data;
     } else {
       console.log("No data fetched");
     }
@@ -173,22 +173,22 @@ onMounted(async () => {
 </script>
 
 <template>
-  <NavBar />
-  <div class="actividades">
+  <Navbar />
+  <div class="activities">
     <h1>Actividades</h1>
     <ul>
-      <ActivityElement
-        v-for="activity in actividades"
+      <ActivityItem
+        v-for="activity in activities"
         :key="activity.id"
         :activity="activity"
       />
     </ul>
   </div>
-  <FooterComponent />
+  <Footer />
 </template>
 
 <style scoped lang="scss">
-.actividades {
+.activities {
   h1 {
     text-align: center;
     font-size: 3rem;
