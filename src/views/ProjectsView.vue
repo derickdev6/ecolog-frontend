@@ -4,6 +4,7 @@ import axios from "axios";
 import Navbar from "@/components/layout/Navbar.vue";
 import Footer from "@/components/layout/Footer.vue";
 import ProjectItem from "@/components/projects/ProjectItem.vue";
+import ControlButtons from "@/components/shared/ControlButtons.vue";
 
 // Simulate a request to the API
 const projects = ref([
@@ -62,8 +63,8 @@ onMounted(async () => {
 
 <template>
   <Navbar />
+  <h1>Proyectos</h1>
   <div class="projects">
-    <h1>Proyectos</h1>
     <ul>
       <ProjectItem
         v-for="project in projects"
@@ -72,22 +73,39 @@ onMounted(async () => {
       />
     </ul>
   </div>
+  <ControlButtons />
   <Footer />
 </template>
 
 <style scoped lang="scss">
+h1 {
+  text-align: center;
+  font-size: 3rem;
+  margin: 4rem 0;
+}
 .projects {
-  h1 {
-    text-align: center;
-    font-size: 3rem;
-    margin: 4rem 0;
-  }
+  margin: 4rem 0;
+  gap: 4rem;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   ul {
+    width: 70%;
     display: flex;
     flex-wrap: wrap;
     padding: 0;
-    margin: 4rem 0;
     list-style: none;
+  }
+}
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+  .projects {
+    ul {
+      width: 90%;
+    }
   }
 }
 </style>

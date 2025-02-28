@@ -4,6 +4,7 @@ import axios from "axios";
 import Navbar from "@/components/layout/Navbar.vue";
 import ActivityItem from "@/components/activities/ActivityItem.vue";
 import Footer from "@/components/layout/Footer.vue";
+import ControlButtons from "@/components/shared/ControlButtons.vue";
 
 // Simulate a request to the API
 const activities = ref([
@@ -174,8 +175,8 @@ onMounted(async () => {
 
 <template>
   <Navbar />
+  <h1>Actividades</h1>
   <div class="activities">
-    <h1>Actividades</h1>
     <ul>
       <ActivityItem
         v-for="activity in activities"
@@ -184,22 +185,39 @@ onMounted(async () => {
       />
     </ul>
   </div>
+  <ControlButtons />
   <Footer />
 </template>
 
 <style scoped lang="scss">
+h1 {
+  text-align: center;
+  font-size: 3rem;
+  margin: 4rem 0;
+}
 .activities {
-  h1 {
-    text-align: center;
-    font-size: 3rem;
-    margin: 4rem 0;
-  }
+  margin: 4rem 0;
+  gap: 4rem;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   ul {
+    width: 70%;
     display: flex;
     flex-wrap: wrap;
     padding: 0;
-    margin: 4rem 0;
     list-style: none;
+  }
+}
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+  .activities {
+    ul {
+      width: 90%;
+    }
   }
 }
 </style>

@@ -104,4 +104,9 @@ h1 {
   gap: 4rem;
   justify-content: center;
 }
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+}
 </style>
