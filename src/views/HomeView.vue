@@ -1,7 +1,7 @@
 <script setup>
-import HeroSection from '@/components/HeroSection.vue';
-import LatestSection from '@/components/LatestSection.vue';
-import FooterComponent from '@/components/FooterComponent.vue';
+import HeroSection from "@/components/HeroSection.vue";
+import LatestSection from "@/components/LatestSection.vue";
+import FooterComponent from "@/components/FooterComponent.vue";
 </script>
 
 <template>
