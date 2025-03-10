@@ -1,21 +1,35 @@
 <script setup>
-defineProps({ company: Object });
+import { defineProps } from "vue";
+import { useRouter } from "vue-router";
+
+const props = defineProps({
+  company: Object,
+});
+
+const router = useRouter();
+
+const goToDetail = () => {
+  router.push(`/empresa/${encodeURIComponent(props.company.name)}`);
+};
 </script>
 
 <template>
-  <a href="" class="company-card">
-    <img :src="company.image" />
+  <div class="company-card" @click="goToDetail">
+    <img :src="company.logo" :alt="`${company.name} logo`" />
     <div class="company-info">
       <h3>{{ company.name }}</h3>
       <small>{{ company.ceo }}</small>
-      <p>{{ company.description }}</p>
+      <p>{{ company.short }}</p>
     </div>
-    <!-- Nueva sección para los contactos -->
     <div class="company-links">
       <a
-        v-for="contact in company.contact"
+        v-for="contact in company.contact || []"
         :key="contact.name"
-        :href="contact.link"
+        :href="
+          contact.link.startsWith('http')
+            ? contact.link
+            : `https://${contact.link}`
+        "
         target="_blank"
       >
         <img
@@ -24,11 +38,12 @@ defineProps({ company: Object });
         />
       </a>
     </div>
-  </a>
+  </div>
 </template>
 
 <style scoped lang="scss">
 .company-card {
+  cursor: pointer;
   text-decoration: none;
   color: #000000;
   width: 35%;

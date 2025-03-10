@@ -32,7 +32,7 @@
     h1 {
       font-size: 6rem;
       margin-bottom: 1rem;
-      text-shadow: 0rem 0rem 5rem #ffffff66;
+      text-shadow: 0rem 0.5rem 0.2rem #003b2c88, 0rem 1rem 5rem #ffffff66;
     }
     p {
       font-size: 1.8rem;
