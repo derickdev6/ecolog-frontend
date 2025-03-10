@@ -3,7 +3,10 @@ import { defineProps } from "vue";
 import { useRouter } from "vue-router";
 
 const props = defineProps({
-  company: Object,
+  company: {
+    type: Object,
+    required: true,
+  },
 });
 
 const router = useRouter();
@@ -15,15 +18,19 @@ const goToDetail = () => {
 
 <template>
   <div class="company-card" @click="goToDetail">
-    <img :src="company.logo" :alt="`${company.name} logo`" />
+    <img
+      :src="company.logo"
+      :alt="`${company.name} logo`"
+      class="company-logo"
+    />
     <div class="company-info">
       <h3>{{ company.name }}</h3>
-      <small>{{ company.ceo }}</small>
-      <p>{{ company.short }}</p>
+      <small>{{ company.ceo || "CEO no disponible" }}</small>
+      <p>{{ company.short || "Descripción no disponible" }}</p>
     </div>
-    <div class="company-links">
+    <div class="company-links" v-if="company.contact?.length">
       <a
-        v-for="contact in company.contact || []"
+        v-for="contact in company.contact"
         :key="contact.name"
         :href="
           contact.link.startsWith('http')
@@ -31,6 +38,7 @@ const goToDetail = () => {
             : `https://${contact.link}`
         "
         target="_blank"
+        rel="noopener noreferrer"
       >
         <img
           :src="`/src/assets/icons/${contact.name}.png`"
@@ -44,74 +52,78 @@ const goToDetail = () => {
 <style scoped lang="scss">
 .company-card {
   cursor: pointer;
-  text-decoration: none;
-  color: #000000;
-  width: 35%;
-  min-width: 35rem;
-  min-height: 20rem;
+  width: 100%;
+  max-width: 40rem;
   display: flex;
-  padding: 2rem;
-  border-radius: 2rem;
+  flex-direction: column;
   align-items: center;
-  gap: 2rem;
-  overflow: hidden;
-  background-color: #003b2c11;
-  box-shadow: 0rem 0rem 2rem 0.5rem #003b2c22;
-  transition: 0.3s;
+  text-align: center;
+  padding: 1.5rem;
+  border-radius: 4rem;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease,
+    background-color 0.3s ease;
+
   &:hover {
-    transform: translateY(-0.2rem);
-    background-color: #003b2c0a;
-    box-shadow: 0rem 0rem 2rem 1rem #003b2c44;
+    background-color: #fefefe;
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
   }
-  img {
-    width: 16rem;
-    border-radius: 2rem;
+}
+
+.company-logo {
+  width: 14rem;
+  height: 14rem;
+  border-radius: 2rem;
+  margin-bottom: 1rem;
+}
+
+.company-info {
+  h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
   }
-  .company-info {
-    flex: 1;
-    h3 {
-      font-size: 2.4rem;
-    }
-    small {
-      font-size: 1.2rem;
-      color: #666;
-    }
-    p {
-      font-size: 1.6rem;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 2.4rem;
-    }
+
+  small {
+    font-size: 1rem;
+    color: #777;
   }
-  .company-links {
+
+  p {
+    font-size: 1.2rem;
+    color: #555;
+    margin-top: 0.5rem;
+  }
+}
+
+.company-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  a {
     display: flex;
-    flex-direction: column;
-    // gap: .5rem;
-    a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: 0.3s;
-      &:hover {
-        transform: scale(1.2);
-      }
-      img {
-        width: 4rem;
-        height: 4rem;
-      }
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    img {
+      width: 5rem;
+      height: 5rem;
     }
   }
 }
 
 @media (max-width: 768px) {
   .company-card {
-    width: 80%;
-    flex-direction: column;
-    text-align: center;
-    min-width: auto;
-    .company-links {
-      flex-direction: row;
-    }
+    max-width: 80%;
   }
 }
 </style>

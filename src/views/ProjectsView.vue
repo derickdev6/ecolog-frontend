@@ -6,13 +6,17 @@ import Footer from "@/components/layout/Footer.vue";
 import ProjectItem from "@/components/projects/ProjectItem.vue";
 import ControlButtons from "@/components/shared/ControlButtons.vue";
 
+const projects = ref([]);
 const loading = ref(true);
 
-const projects = ref([]);
+const BACKEND_IP = import.meta.env.VITE_BACKEND_IP;
+const BACKEND_PORT = import.meta.env.VITE_BACKEND_PORT;
+const API_URL = `http://${BACKEND_IP}:${BACKEND_PORT}/api/projects/list`;
+
 onMounted(async () => {
   try {
-    console.log("Fetching data...");
-    const { data } = await axios.get("http://localhost:5000/api/projects/list");
+    console.log("Fetching data from:", API_URL);
+    const { data } = await axios.get(API_URL);
     if (data.length > 0) {
       console.log("Data fetched");
       projects.value = data;
