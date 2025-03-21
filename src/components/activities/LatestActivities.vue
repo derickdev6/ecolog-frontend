@@ -1,54 +1,32 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import axios from "axios";
 import ActivityCard from "@/components/activities/ActivityCard.vue";
+import router from "@/router";
 
-const activities = ref([
-  {
-    id: 1,
-    title: "Evento Tech",
-    description:
-      "Lorem Ipsum is  standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and .",
-    project: "TechTalks",
-    company: "Google",
-    image: "https://loremflickr.com/200/200?random=1",
-  },
-  {
-    id: 2,
-    title: "Vnet",
-    description:
-      "ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    project: "CodeMasters",
-    company: "Microsoft",
-    image: "https://loremflickr.com/200/200?random=2",
-  },
-  {
-    id: 2,
-    title: "Histoy Context",
-    description:
-      "galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently ing versions of Lorem Ipsum.",
-    project: "CodeMasters",
-    company: "Microsoft",
-    image: "https://loremflickr.com/200/200?random=3",
-  },
-  {
-    id: 2,
-    title: "Ekologik",
-    description:
-      "and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic  versions of Lorem Ipsum.",
-    project: "CodeMasters",
-    company: "Microsoft",
-    image: "https://loremflickr.com/200/200?random=4",
-  },
-  {
-    id: 2,
-    title: "Ecohack",
-    description:
-      "1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing ng versions of Lorem Ipsum.",
-    project: "CodeMasters",
-    company: "Microsoft",
-    image: "https://loremflickr.com/200/200?random=5",
-  },
-]);
+const activities = ref([]);
+const loading = ref(true);
+
+const BACKEND_IP = import.meta.env.VITE_BACKEND_IP;
+const BACKEND_PORT = import.meta.env.VITE_BACKEND_PORT;
+const API_URL = `http://${BACKEND_IP}:${BACKEND_PORT}/api/activities/latest`;
+
+onMounted(async () => {
+  try {
+    console.log("Fetching data from:", API_URL);
+    const { data } = await axios.get(API_URL);
+    if (data.length > 0) {
+      activities.value = data;
+    } else {
+      router.push("/404");
+    }
+  } catch (error) {
+    console.error("Error fetching activities:", error);
+    router.push("/404");
+  } finally {
+    loading.value = false;
+  }
+});
 </script>
 
 <template>

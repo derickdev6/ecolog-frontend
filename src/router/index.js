@@ -6,6 +6,7 @@ import ProjectsView from "@/views/ProjectsView.vue";
 import ActivitiesView from "@/views/ActivitiesView.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
 import ProjectDetailView from "@/views/ProjectDetailView.vue";
+import ActivityDetailView from "@/views/ActivityDetailView.vue";
 
 const routes = [
   { path: "/", component: HomeView },
@@ -14,6 +15,7 @@ const routes = [
   { path: "/proyectos", component: ProjectsView },
   { path: "/proyecto/:id", component: ProjectDetailView, props: true },
   { path: "/actividades", component: ActivitiesView },
+  { path: "/actividad/:id", component: ActivityDetailView, props: true },
   { path: "/:pathMatch(.*)*", component: NotFoundView },
 ];
 

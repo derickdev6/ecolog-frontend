@@ -58,7 +58,6 @@ h1 {
   font-size: 3rem;
   margin: 4rem 0;
 }
-
 .loading {
   text-align: center;
   font-size: 1.5rem;
@@ -66,20 +65,15 @@ h1 {
 }
 
 .activities {
+  margin: 4rem 0;
+  justify-content: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 4rem 0;
-  width: 70%;
-  gap: 2rem;
 }
-
 @media screen and (max-width: 768px) {
   h1 {
     font-size: 2rem;
-  }
-  .activities {
-    width: 90%;
   }
 }
 </style>

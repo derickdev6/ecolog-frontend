@@ -28,22 +28,19 @@ const goToDetail = () => {
       <small>{{ company.ceo || "CEO no disponible" }}</small>
       <p>{{ company.short || "Descripción no disponible" }}</p>
     </div>
-    <div class="company-links" v-if="company.contact?.length">
+    <div class="company-links" v-if="company.social?.length">
       <a
-        v-for="contact in company.contact"
-        :key="contact.name"
+        v-for="social in company.social"
+        :key="social.name"
         :href="
-          contact.link.startsWith('http')
-            ? contact.link
-            : `https://${contact.link}`
+          social.link.startsWith('http')
+            ? social.link
+            : `https://${social.link}`
         "
         target="_blank"
         rel="noopener noreferrer"
       >
-        <img
-          :src="`/src/assets/icons/${contact.name}.png`"
-          :alt="contact.name"
-        />
+        <img :src="`/src/assets/icons/${social.name}.png`" :alt="social.name" />
       </a>
     </div>
   </div>
@@ -53,21 +50,20 @@ const goToDetail = () => {
 .company-card {
   cursor: pointer;
   width: 25%;
+  min-width: 20rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   padding: 1.5rem;
   border-radius: 4rem;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease,
     background-color 0.3s ease;
 
   &:hover {
-    background-color: #fefefe;
     transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
   }
 }
 
@@ -122,7 +118,7 @@ const goToDetail = () => {
 
 @media (max-width: 768px) {
   .company-card {
-    max-width: 80%;
+    width: 80%;
   }
 }
 </style>

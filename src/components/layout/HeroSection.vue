@@ -65,14 +65,15 @@
       width: 20vw;
       border-radius: 3rem;
       transition: 0.5s;
-      box-shadow: 0rem 0rem 2rem 0.5rem #ffffff1f;
+      box-shadow: 0 13px 27px -5px #ffffff40, 0 8px 16px -8px #ffffff4d,
+        0 -6px 16px -6px #ffffff08;
       // Hover effect
       // When hovering, the image will float up, and glow
       &:hover {
-        transform: translate(0, -0.5rem);
-        transform: perspective(100rem) rotateY(-5deg) rotateX(2deg);
+        transform: translate(0, -0.1rem);
         filter: brightness(100%);
-        box-shadow: 0rem 0rem 2rem 0.5rem #ffffff32;
+        box-shadow: 0 13px 27px -5px #ffffff20, 0 8px 16px -8px #ffffff2d,
+          0 -6px 16px -6px #ffffff02;
       }
     }
   }

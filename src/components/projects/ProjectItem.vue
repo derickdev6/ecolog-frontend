@@ -45,7 +45,7 @@ const projectDescription = computed(() =>
       <h3>{{ project.name }}</h3>
       <small>{{ project.company?.name || "N/A" }}</small>
       <br />
-      <small>{{ formattedDate }}</small>
+      <small>🗓️{{ formattedDate }}</small>
     </div>
 
     <p>{{ projectDescription }}</p>
@@ -58,7 +58,7 @@ const projectDescription = computed(() =>
   display: flex;
   align-items: center;
   width: 70%;
-  min-height: 20rem;
+  height: 20rem;
   padding: 1rem;
   color: #000;
   overflow: hidden;
@@ -83,6 +83,12 @@ const projectDescription = computed(() =>
     h3 {
       font-size: 2rem;
       margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
 
     small {
@@ -103,8 +109,8 @@ const projectDescription = computed(() =>
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
-    transition: -webkit-line-clamp 0.3s ease, line-clamp 0.3s ease,
-      height 0.3s ease;
+    // transition: -webkit-line-clamp 0.3s ease, line-clamp 0.3s ease,
+    //   height 0.3s ease;
   }
 
   &:hover {
@@ -115,10 +121,10 @@ const projectDescription = computed(() =>
 @media (max-width: 768px) {
   .project-item {
     width: 90%;
-    min-height: 14rem;
+    height: 14rem;
     img {
       width: 8rem;
-      height: 8rem;
+      height: 10rem;
     }
 
     .project-info {
@@ -132,7 +138,7 @@ const projectDescription = computed(() =>
 
     p {
       line-height: 1.4rem;
-      flex: 2;
+      flex: 1;
       font-size: 1rem;
       -webkit-line-clamp: 3;
       line-clamp: 3;

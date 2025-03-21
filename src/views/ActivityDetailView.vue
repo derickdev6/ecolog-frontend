@@ -4,74 +4,71 @@ import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import Navbar from "@/components/layout/Navbar.vue";
 import Footer from "@/components/layout/Footer.vue";
-import ActivityItem from "@/components/activities/ActivityItem.vue";
 
 const route = useRoute();
 const router = useRouter();
-const project = ref(null);
-const activities = ref([]);
+const activity = ref(null);
 const errorMessage = ref(null);
 const BACKEND_IP = import.meta.env.VITE_BACKEND_IP;
 const BACKEND_PORT = import.meta.env.VITE_BACKEND_PORT;
-const API_URL = `http://${BACKEND_IP}:${BACKEND_PORT}/api/projects/${route.params.id}`;
+const API_URL = `http://${BACKEND_IP}:${BACKEND_PORT}/api/activities/${route.params.id}`;
 
-onMounted(async () => {
+// Fetch activity details
+const fetchProject = async () => {
   try {
     console.log("Fetching data from:", API_URL);
     const { data } = await axios.get(API_URL);
 
     if (data && data._id) {
       console.log("Data fetched:", data);
-      project.value = data;
-
-      const API_URL2 = `http://${BACKEND_IP}:${BACKEND_PORT}/api/activities/project/${project.value._id}`;
-      console.log("Fetching projects data from:", API_URL2);
-      const { data: activitiesData } = await axios.get(API_URL2);
-      activities.value = activitiesData || [];
+      activity.value = data;
     } else {
-      throw new Error("No valid project data found");
+      throw new Error("No valid activity data found");
     }
   } catch (error) {
-    console.error("Error fetching project:", error);
+    console.error("Error fetching activity:", error);
     router.push("/404");
   }
-});
+};
+
+onMounted(fetchProject);
 
 // Computed properties
-const projectImage = computed(
-  () => project.value?.images?.[0] || "https://via.placeholder.com/600"
+const activityImage = computed(
+  () => activity.value?.images?.[0] || "https://via.placeholder.com/600"
 );
 const formattedDate = computed(() =>
-  project.value?.date
-    ? new Date(project.value.date).toLocaleDateString()
+  activity.value?.date
+    ? new Date(activity.value.date).toLocaleDateString()
     : "N/A"
 );
-const projectDescription = computed(() =>
-  Array.isArray(project.value?.description)
-    ? project.value.description
-    : [project.value?.description || "No description available."]
+const activityDescription = computed(() =>
+  Array.isArray(activity.value?.description)
+    ? activity.value.description
+    : [activity.value?.description || "No description available."]
 );
 </script>
 
 <template>
   <Navbar />
   <main>
-    <div v-if="project" class="project-container">
-      <div class="project-content">
+    <div v-if="activity" class="activity-container">
+      <div class="activity-content">
         <!-- Project Image -->
-        <div class="project-image">
-          <img :src="projectImage" alt="Project Image" />
+        <div class="activity-image">
+          <img :src="activityImage" alt="Project Image" />
         </div>
 
         <!-- Project Info -->
-        <div class="project-info">
-          <h1>{{ project.name }}</h1>
-          <p class="company">{{ project.company?.name || "N/A" }}</p>
+        <div class="activity-info">
+          <h1>{{ activity.name }}</h1>
+          <p class="company">{{ activity.company?.name || "N/A" }}</p>
+          <p class="project">{{ activity.project?.name || "N/A" }}</p>
           <p class="date">📅 {{ formattedDate }}</p>
 
           <div class="description">
             <p
-              v-for="(paragraph, index) in projectDescription"
+              v-for="(paragraph, index) in activityDescription"
               :key="index"
               class="description-text"
             >
@@ -80,15 +77,6 @@ const projectDescription = computed(() =>
           </div>
         </div>
       </div>
-    </div>
-    <div v-if="activities.length > 0" class="project-activities">
-      <ul>
-        <ActivityItem
-          v-for="activity in activities"
-          :key="activity._id"
-          :activity="activity"
-        />
-      </ul>
     </div>
   </main>
 
@@ -103,32 +91,14 @@ main {
   align-items: center;
   animation: fadeIn 0.5s ease-in-out;
 
-  .project-container {
-    flex: 6;
-    max-width: 100rem;
+  .activity-container {
+    max-width: 1000px;
     margin: 40px auto;
     padding: 20px;
     animation: fadeIn 0.5s ease-in-out;
   }
-  .activity-item {
-    width: 90%;
-  }
 
-  .project-activities {
-    overflow-y: scroll;
-    flex: 4;
-    margin: 40px auto;
-    padding: 20px;
-    animation: fadeIn 0.5s ease-in-out;
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-  }
-
-  .project-content {
+  .activity-content {
     display: flex;
     flex-wrap: wrap;
     background: #ffffff;
@@ -137,7 +107,7 @@ main {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   }
 
-  .project-image {
+  .activity-image {
     flex: 1;
     min-width: 25rem;
     max-width: 40%;
@@ -149,7 +119,7 @@ main {
     }
   }
 
-  .project-info {
+  .activity-info {
     flex: 1;
     padding: 20px;
     display: flex;
@@ -162,7 +132,7 @@ main {
       margin-bottom: 10px;
     }
 
-    .company {
+    .company .project {
       font-size: 1.6rem;
       color: #666;
     }
@@ -190,24 +160,16 @@ main {
 }
 /* Responsive */
 @media (max-width: 768px) {
-  main {
-    flex-direction: column;
-    min-height: calc(100vh - 20rem);
-  }
-  .project-content {
-    flex: 1;
+  .activity-content {
     flex-direction: column;
     align-items: center;
   }
-  .project-activities {
-    flex: 1;
-  }
 
-  .project-image {
+  .activity-image {
     max-width: 100%;
   }
 
-  .project-info {
+  .activity-info {
     text-align: center;
     padding: 15px;
   }

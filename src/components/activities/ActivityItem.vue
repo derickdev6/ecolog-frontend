@@ -9,16 +9,32 @@ const props = defineProps({
 });
 
 // Imagen por defecto si no tiene imagen
-const activityImage = computed(
-  () => props.activity?.image || "https://via.placeholder.com/150"
+const activityImage = computed(() =>
+  props.activity?.images?.length
+    ? props.activity.images[0]
+    : "https://via.placeholder.com/150"
 );
 
 // Redirección al detalle de la actividad
 const goToDetail = () => {
-  if (props.activity?.id) {
-    router.push(`/actividad/${encodeURIComponent(props.activity.id)}`);
+  if (props.activity?._id) {
+    router.push(`/actividad/${encodeURIComponent(props.activity._id)}`);
   }
 };
+
+// Computed property for formatted date
+const formattedDate = computed(() =>
+  props.activity?.date
+    ? new Date(props.activity.date).toLocaleDateString()
+    : "N/A"
+);
+
+// Computed property for activity description
+const activityDescription = computed(() =>
+  Array.isArray(props.activity?.description)
+    ? props.activity.description.join(" ")
+    : props.activity?.description || "No description available."
+);
 </script>
 
 <template>
@@ -26,13 +42,13 @@ const goToDetail = () => {
     <img :src="activityImage" alt="Activity Image" />
 
     <div class="activity-info">
-      <h3>{{ activity.title }}</h3>
-      <small>{{ activity.project }} - {{ activity.company }}</small>
+      <h3>{{ activity.name }}</h3>
+      <small>{{ activity.project.name }} - {{ activity.company.name }}</small>
       <br />
-      <small>{{ activity.date }}</small>
+      <small>🗓️{{ formattedDate }}</small>
     </div>
 
-    <p>{{ activity.description }}</p>
+    <p>{{ activityDescription }}</p>
   </div>
 </template>
 
@@ -42,17 +58,17 @@ const goToDetail = () => {
   display: flex;
   align-items: center;
   width: 70%;
-  min-height: 12rem;
+  height: 20rem;
   padding: 1rem;
   color: #000;
+  overflow: hidden;
+  transition: background-color 0.3s ease;
   border-radius: 1rem;
   gap: 2rem;
-  transition: background-color 0.3s ease;
-  overflow: hidden;
 
   img {
-    width: 12rem;
-    height: 12rem;
+    width: 16rem;
+    height: 16rem;
     object-fit: cover;
     border-radius: 0.5rem;
   }
@@ -61,12 +77,18 @@ const goToDetail = () => {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.5rem;
+    gap: 1rem;
     flex: 1;
 
     h3 {
-      font-size: 1.8rem;
+      font-size: 2rem;
       margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
 
     small {
@@ -79,14 +101,16 @@ const goToDetail = () => {
     border-left: 1px solid #666;
     padding-left: 1rem;
     flex: 3;
-    font-size: 1.2rem;
-    line-height: 2rem;
+    font-size: 1.4rem;
+    line-height: 2.4rem;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
+    // transition: -webkit-line-clamp 0.3s ease, line-clamp 0.3s ease,
+    //   height 0.3s ease;
   }
 
   &:hover {
@@ -97,11 +121,10 @@ const goToDetail = () => {
 @media (max-width: 768px) {
   .activity-item {
     width: 90%;
-    min-height: 10rem;
-
+    height: 14rem;
     img {
       width: 8rem;
-      height: 8rem;
+      height: 10rem;
     }
 
     .activity-info {
@@ -109,11 +132,13 @@ const goToDetail = () => {
         font-size: 1.5rem;
       }
       small {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
       }
     }
 
     p {
+      line-height: 1.4rem;
+      flex: 1;
       font-size: 1rem;
       -webkit-line-clamp: 3;
       line-clamp: 3;

@@ -4,10 +4,12 @@ import { useRoute } from "vue-router";
 import axios from "axios";
 import Navbar from "@/components/layout/Navbar.vue";
 import Footer from "@/components/layout/Footer.vue";
+import ProjectItem from "@/components/projects/ProjectItem.vue";
 import router from "@/router";
 
 const route = useRoute();
 const company = ref(null);
+const projects = ref([]); // Inicializado como array vacío
 const loading = ref(true);
 
 const BACKEND_IP = import.meta.env.VITE_BACKEND_IP;
@@ -16,15 +18,20 @@ const API_URL = `http://${BACKEND_IP}:${BACKEND_PORT}/api/companies/${route.para
 
 onMounted(async () => {
   try {
-    console.log("Fetching data from:", API_URL);
+    console.log("Fetching company data from:", API_URL);
     const { data } = await axios.get(API_URL);
-    company.value = data || null;
-    console.log(data ? "Data fetched" : "No data fetched");
     if (!data) {
       router.push("/404");
+      return;
     }
+    company.value = data;
+
+    const API_URL2 = `http://${BACKEND_IP}:${BACKEND_PORT}/api/projects/company/${company.value._id}`;
+    console.log("Fetching projects data from:", API_URL2);
+    const { data: projectsData } = await axios.get(API_URL2); // Renombrado `data` para evitar colisión
+    projects.value = projectsData || [];
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching data:", error);
   } finally {
     loading.value = false;
   }
@@ -72,6 +79,16 @@ onMounted(async () => {
         </div>
       </div>
     </div>
+
+    <div v-if="projects.length > 0" class="company-projects">
+      <ul>
+        <ProjectItem
+          v-for="project in projects"
+          :key="project._id"
+          :project="project"
+        />
+      </ul>
+    </div>
   </main>
   <Footer />
 </template>
@@ -80,17 +97,24 @@ onMounted(async () => {
 main {
   min-height: calc(100vh - 23rem);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+
+  .loading {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #666;
+    margin-top: 5rem;
+  }
 
   .company-container {
     width: 40%;
-    height: 60%;
     padding: 2rem;
     margin: 4rem 0;
     background: #fff;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 13px 27px -5px #32325d40, 0 8px 16px -8px #0000004d,
+      0 -6px 16px -6px #00000008;
     text-align: center;
     animation: fadeIn 0.5s ease-in-out;
   }
@@ -122,25 +146,70 @@ main {
     color: #444;
     margin-top: 0.5rem;
   }
+
   .company-links {
     display: flex;
     justify-content: center;
-    // gap: 0.5rem;
+    gap: 0.5rem;
+
     a {
       display: flex;
       align-items: center;
       justify-content: center;
       transition: 0.3s;
+
       &:hover {
         transform: scale(1.2);
       }
+
       img {
         width: 4rem;
         height: 4rem;
       }
     }
   }
+
+  .company-projects {
+    margin-top: 2rem;
+    // text-align: center;
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    ul {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      list-style: none;
+      padding: 0;
+
+      li {
+        margin: 0.5rem 0;
+
+        a {
+          font-size: 1.2rem;
+          text-decoration: none;
+          color: #007bff;
+          transition: color 0.3s;
+
+          &:hover {
+            color: #0056b3;
+          }
+        }
+      }
+    }
+  }
+
+  .no-projects {
+    font-size: 1.2rem;
+    color: #999;
+    margin-top: 2rem;
+  }
 }
+
 @media screen and (max-width: 768px) {
   main {
     .company-container {
@@ -148,6 +217,7 @@ main {
     }
   }
 }
+
 /* Fade-in effect */
 @keyframes fadeIn {
   from {

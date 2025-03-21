@@ -71,22 +71,10 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  ul {
-    width: 70%;
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0;
-    list-style: none;
-  }
 }
 @media screen and (max-width: 768px) {
   h1 {
     font-size: 2rem;
-  }
-  .projects {
-    ul {
-      width: 90%;
-    }
   }
 }
 </style>
