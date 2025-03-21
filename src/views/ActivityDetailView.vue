@@ -11,7 +11,7 @@ const activity = ref(null);
 const errorMessage = ref(null);
 const BACKEND_IP = import.meta.env.VITE_BACKEND_IP;
 const BACKEND_PORT = import.meta.env.VITE_BACKEND_PORT;
-const API_URL = `http://${BACKEND_IP}:${BACKEND_PORT}/api/activities/${route.params.id}`;
+const API_URL = `${BACKEND_IP}/api/activities/${route.params.id}`;
 
 // Fetch activity details
 const fetchProject = async () => {

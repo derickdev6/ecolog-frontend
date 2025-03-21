@@ -13,7 +13,7 @@ const activities = ref([]);
 const errorMessage = ref(null);
 const BACKEND_IP = import.meta.env.VITE_BACKEND_IP;
 const BACKEND_PORT = import.meta.env.VITE_BACKEND_PORT;
-const API_URL = `http://${BACKEND_IP}:${BACKEND_PORT}/api/projects/${route.params.id}`;
+const API_URL = `${BACKEND_IP}/api/projects/${route.params.id}`;
 
 onMounted(async () => {
   try {
@@ -24,9 +24,10 @@ onMounted(async () => {
       console.log("Data fetched:", data);
       project.value = data;
 
-      const API_URL2 = `http://${BACKEND_IP}:${BACKEND_PORT}/api/activities/project/${project.value._id}`;
+      const API_URL2 = `${BACKEND_IP}/api/activities/project/${project.value._id}`;
       console.log("Fetching projects data from:", API_URL2);
       const { data: activitiesData } = await axios.get(API_URL2);
+      console.log("Data fetched:", activitiesData);
       activities.value = activitiesData || [];
     } else {
       throw new Error("No valid project data found");
@@ -82,6 +83,7 @@ const projectDescription = computed(() =>
       </div>
     </div>
     <div v-if="activities.length > 0" class="project-activities">
+      <h2>Actividades</h2>
       <ul>
         <ActivityItem
           v-for="activity in activities"
@@ -120,6 +122,12 @@ main {
     margin: 40px auto;
     padding: 20px;
     animation: fadeIn 0.5s ease-in-out;
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
 
     ul {
       list-style: none;

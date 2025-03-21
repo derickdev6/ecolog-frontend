@@ -11,7 +11,7 @@ const loading = ref(true);
 
 const BACKEND_IP = import.meta.env.VITE_BACKEND_IP;
 const BACKEND_PORT = import.meta.env.VITE_BACKEND_PORT;
-const API_URL = `http://${BACKEND_IP}:${BACKEND_PORT}/api/companies`;
+const API_URL = `${BACKEND_IP}/api/companies`;
 
 onMounted(async () => {
   try {

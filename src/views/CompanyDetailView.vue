@@ -14,7 +14,7 @@ const loading = ref(true);
 
 const BACKEND_IP = import.meta.env.VITE_BACKEND_IP;
 const BACKEND_PORT = import.meta.env.VITE_BACKEND_PORT;
-const API_URL = `http://${BACKEND_IP}:${BACKEND_PORT}/api/companies/${route.params.name}`;
+const API_URL = `${BACKEND_IP}/api/companies/${route.params.name}`;
 
 onMounted(async () => {
   try {
@@ -24,9 +24,10 @@ onMounted(async () => {
       router.push("/404");
       return;
     }
+    console.log("Data fetched:", data);
     company.value = data;
 
-    const API_URL2 = `http://${BACKEND_IP}:${BACKEND_PORT}/api/projects/company/${company.value._id}`;
+    const API_URL2 = `${BACKEND_IP}/api/projects/company/${company.value._id}`;
     console.log("Fetching projects data from:", API_URL2);
     const { data: projectsData } = await axios.get(API_URL2); // Renombrado `data` para evitar colisión
     projects.value = projectsData || [];
@@ -62,18 +63,18 @@ onMounted(async () => {
         </div>
         <div class="company-links">
           <a
-            v-for="contact in company.contact || []"
-            :key="contact.name"
+            v-for="social in company.social || []"
+            :key="social.name"
             :href="
-              contact.link.startsWith('http')
-                ? contact.link
-                : `https://${contact.link}`
+              social.link.startsWith('http')
+                ? social.link
+                : `https://${social.link}`
             "
             target="_blank"
           >
             <img
-              :src="`/src/assets/icons/${contact.name}.png`"
-              :alt="contact.name"
+              :src="`/src/assets/icons/${social.name}.png`"
+              :alt="social.name"
             />
           </a>
         </div>
@@ -81,6 +82,7 @@ onMounted(async () => {
     </div>
 
     <div v-if="projects.length > 0" class="company-projects">
+      <h2>Proyectos</h2>
       <ul>
         <ProjectItem
           v-for="project in projects"
@@ -174,8 +176,9 @@ main {
     // text-align: center;
 
     h2 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
     }
 
     ul {

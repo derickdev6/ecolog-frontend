@@ -9,7 +9,7 @@ const loading = ref(true);
 
 const BACKEND_IP = import.meta.env.VITE_BACKEND_IP;
 const BACKEND_PORT = import.meta.env.VITE_BACKEND_PORT;
-const API_URL = `http://${BACKEND_IP}:${BACKEND_PORT}/api/activities/latest`;
+const API_URL = `${BACKEND_IP}/api/activities/latest`;
 
 onMounted(async () => {
   try {
@@ -17,8 +17,6 @@ onMounted(async () => {
     const { data } = await axios.get(API_URL);
     if (data.length > 0) {
       activities.value = data;
-    } else {
-      router.push("/404");
     }
   } catch (error) {
     console.error("Error fetching activities:", error);
