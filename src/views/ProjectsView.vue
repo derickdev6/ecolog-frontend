@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/Navbar.vue";
 import Footer from "@/components/layout/Footer.vue";
 import ProjectItem from "@/components/projects/ProjectItem.vue";
 import ControlButtons from "@/components/shared/ControlButtons.vue";
+import router from "@/router";
 
 const projects = ref([]);
 const loading = ref(true);

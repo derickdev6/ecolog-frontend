@@ -52,8 +52,7 @@ const goToDetail = () => {
 <style scoped lang="scss">
 .company-card {
   cursor: pointer;
-  width: 100%;
-  max-width: 40rem;
+  width: 25%;
   display: flex;
   flex-direction: column;
   align-items: center;
