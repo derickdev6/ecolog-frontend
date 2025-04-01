@@ -11,6 +11,7 @@ const route = useRoute();
 const company = ref(null);
 const projects = ref([]); // Inicializado como array vacío
 const loading = ref(true);
+const errorMessage = ref(null);
 
 const BACKEND_IP = import.meta.env.VITE_BACKEND_IP;
 const BACKEND_PORT = import.meta.env.VITE_BACKEND_PORT;
@@ -18,6 +19,7 @@ const API_URL = `${BACKEND_IP}/api/companies/${route.params.name}`;
 
 onMounted(async () => {
   try {
+    loading.value = true;
     console.log("Fetching company data from:", API_URL);
     const { data } = await axios.get(API_URL);
     if (!data) {
@@ -29,10 +31,11 @@ onMounted(async () => {
 
     const API_URL2 = `${BACKEND_IP}/api/projects/company/${company.value._id}`;
     console.log("Fetching projects data from:", API_URL2);
-    const { data: projectsData } = await axios.get(API_URL2); // Renombrado `data` para evitar colisión
+    const { data: projectsData } = await axios.get(API_URL2);
     projects.value = projectsData || [];
   } catch (error) {
     console.error("Error fetching data:", error);
+    errorMessage.value = "Failed to load company data";
   } finally {
     loading.value = false;
   }
@@ -40,73 +43,114 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Navbar />
-  <main>
-    <div v-if="company" class="company-container">
-      <div class="company-info">
-        <img :src="company.logo" alt="Company Logo" class="company-logo" />
-        <h1 class="company-name">{{ company.name }}</h1>
-        <p class="company-details">{{ company.address }}</p>
-        <p class="company-details">NIT {{ company.nit }}</p>
-        <p class="company-details">{{ company.phone }}</p>
-        <p class="company-details">{{ company.mail }}</p>
-        <p class="company-details">{{ company.ceo }}</p>
-        <div class="company-description">
-          <h2>Nosotros</h2>
-          <p
-            v-for="(paragraph, index) in company.description"
-            :key="index"
-            class="company-text"
-          >
-            {{ paragraph }}
-          </p>
-        </div>
-        <div class="company-links">
-          <a
-            v-for="social in company.social || []"
-            :key="social.name"
-            :href="
-              social.link.startsWith('http')
-                ? social.link
-                : `https://${social.link}`
-            "
-            target="_blank"
-          >
-            <img
-              :src="`/src/assets/icons/${social.name}.png`"
-              :alt="social.name"
-            />
-          </a>
+  <div class="page-container">
+    <Navbar />
+    <main>
+      <!-- Loading state -->
+      <div v-if="loading" class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Cargando detalles de la empresa...</p>
+      </div>
+
+      <!-- Error state -->
+      <div v-else-if="errorMessage" class="error-container">
+        <p class="error-message">{{ errorMessage }}</p>
+      </div>
+
+      <!-- Company content -->
+      <div v-else-if="company" class="company-container">
+        <div class="company-info">
+          <img :src="company.logo" alt="Company Logo" class="company-logo" />
+          <h1 class="company-name">{{ company.name }}</h1>
+          <p class="company-details">{{ company.address }}</p>
+          <p class="company-details">NIT {{ company.nit }}</p>
+          <p class="company-details">{{ company.phone }}</p>
+          <p class="company-details">{{ company.mail }}</p>
+          <p class="company-details">{{ company.ceo }}</p>
+          <div class="company-description">
+            <h2>Nosotros</h2>
+            <p
+              v-for="(paragraph, index) in company.description"
+              :key="index"
+              class="company-text"
+            >
+              {{ paragraph }}
+            </p>
+          </div>
+          <div class="company-links">
+            <a
+              v-for="social in company.social || []"
+              :key="social.name"
+              :href="
+                social.link.startsWith('http')
+                  ? social.link
+                  : `https://${social.link}`
+              "
+              target="_blank"
+            >
+              <img
+                :src="`/src/assets/icons/${social.name}.png`"
+                :alt="social.name"
+              />
+            </a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div v-if="projects.length > 0" class="company-projects">
-      <h2>Proyectos</h2>
-      <ul>
-        <ProjectItem
-          v-for="project in projects"
-          :key="project._id"
-          :project="project"
-        />
-      </ul>
-    </div>
-  </main>
-  <Footer />
+      <div v-if="projects.length > 0" class="company-projects">
+        <h2>Proyectos</h2>
+        <ul>
+          <ProjectItem
+            v-for="project in projects"
+            :key="project._id"
+            :project="project"
+          />
+        </ul>
+      </div>
+    </main>
+    <Footer />
+  </div>
 </template>
 
 <style lang="scss" scoped>
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 main {
-  min-height: calc(100vh - 23rem);
+  flex: 1;
+  padding: 14rem 0 2rem 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 
-  .loading {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #666;
-    margin-top: 5rem;
+  .loading-container,
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+  }
+
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+
+  .error-message {
+    color: #e74c3c;
+    font-size: 1.2rem;
+    text-align: center;
   }
 
   .company-container {
@@ -215,6 +259,7 @@ main {
 
 @media screen and (max-width: 768px) {
   main {
+    padding: 8rem 0 0 0;
     .company-container {
       width: 80%;
     }
@@ -230,6 +275,16 @@ main {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Animations */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>

@@ -1,3 +1,4 @@
+<!-- ProjectDetailView.vue - Displays detailed information about a specific project -->
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
@@ -6,62 +7,94 @@ import Navbar from "@/components/layout/Navbar.vue";
 import Footer from "@/components/layout/Footer.vue";
 import ActivityItem from "@/components/activities/ActivityItem.vue";
 
+// Route and router instances
 const route = useRoute();
 const router = useRouter();
+
+// State management
 const project = ref(null);
 const activities = ref([]);
+const isLoading = ref(true);
 const errorMessage = ref(null);
+
+// API configuration
 const BACKEND_IP = import.meta.env.VITE_BACKEND_IP;
 const BACKEND_PORT = import.meta.env.VITE_BACKEND_PORT;
 const API_URL = `${BACKEND_IP}/api/projects/${route.params.id}`;
 
-onMounted(async () => {
+/**
+ * Fetches project data and its associated activities
+ * @returns {Promise<void>}
+ */
+const fetchProjectData = async () => {
   try {
-    console.log("Fetching data from:", API_URL);
+    isLoading.value = true;
     const { data } = await axios.get(API_URL);
 
-    if (data && data._id) {
-      console.log("Data fetched:", data);
-      project.value = data;
-
-      const API_URL2 = `${BACKEND_IP}/api/activities/project/${project.value._id}`;
-      console.log("Fetching projects data from:", API_URL2);
-      const { data: activitiesData } = await axios.get(API_URL2);
-      console.log("Data fetched:", activitiesData);
-      activities.value = activitiesData || [];
-    } else {
+    if (!data?._id) {
       throw new Error("No valid project data found");
     }
+
+    project.value = data;
+
+    // Fetch associated activities
+    const activitiesUrl = `${BACKEND_IP}/api/activities/project/${project.value._id}`;
+    const { data: activitiesData } = await axios.get(activitiesUrl);
+    activities.value = activitiesData || [];
   } catch (error) {
     console.error("Error fetching project:", error);
+    errorMessage.value = "Failed to load project data";
     router.push("/404");
+  } finally {
+    isLoading.value = false;
   }
-});
+};
 
 // Computed properties
 const projectImage = computed(
   () => project.value?.images?.[0] || "https://via.placeholder.com/600"
 );
+
 const formattedDate = computed(() =>
   project.value?.date
     ? new Date(project.value.date).toLocaleDateString()
     : "N/A"
 );
+
 const projectDescription = computed(() =>
   Array.isArray(project.value?.description)
     ? project.value.description
     : [project.value?.description || "No description available."]
 );
+
+// Lifecycle hooks
+onMounted(fetchProjectData);
 </script>
 
 <template>
   <Navbar />
   <main>
-    <div v-if="project" class="project-container">
+    <!-- Loading state -->
+    <div v-if="isLoading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Cargando detalles del proyecto...</p>
+    </div>
+
+    <!-- Error state -->
+    <div v-else-if="errorMessage" class="error-container">
+      <p class="error-message">{{ errorMessage }}</p>
+    </div>
+
+    <!-- Project content -->
+    <div v-else-if="project" class="project-container">
       <div class="project-content">
         <!-- Project Image -->
         <div class="project-image">
-          <img :src="projectImage" alt="Project Image" />
+          <img
+            :src="projectImage"
+            :alt="`${project.name} image`"
+            loading="lazy"
+          />
         </div>
 
         <!-- Project Info -->
@@ -82,15 +115,15 @@ const projectDescription = computed(() =>
         </div>
       </div>
     </div>
+
+    <!-- Activities section -->
     <div v-if="activities.length > 0" class="project-activities">
       <h2>Actividades</h2>
-      <ul>
-        <ActivityItem
-          v-for="activity in activities"
-          :key="activity._id"
-          :activity="activity"
-        />
-      </ul>
+      <ActivityItem
+        v-for="activity in activities"
+        :key="activity._id"
+        :activity="activity"
+      />
     </div>
   </main>
 
@@ -99,26 +132,52 @@ const projectDescription = computed(() =>
 
 <style scoped lang="scss">
 main {
+  padding: 14rem 0 0 0;
   min-height: calc(100vh - 23rem);
   display: flex;
   justify-content: center;
   align-items: center;
   animation: fadeIn 0.5s ease-in-out;
 
+  .loading-container,
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+  }
+
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+
+  .error-message {
+    color: #e74c3c;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
   .project-container {
-    flex: 6;
+    flex: 5;
     max-width: 100rem;
     margin: 40px auto;
     padding: 20px;
     animation: fadeIn 0.5s ease-in-out;
   }
-  .activity-item {
-    width: 90%;
-  }
 
   .project-activities {
-    overflow-y: scroll;
-    flex: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    flex: 5;
     margin: 40px auto;
     padding: 20px;
     animation: fadeIn 0.5s ease-in-out;
@@ -128,11 +187,8 @@ main {
       margin-bottom: 2rem;
       text-align: center;
     }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    .activity-item {
+      width: 90%;
     }
   }
 
@@ -149,6 +205,7 @@ main {
     flex: 1;
     min-width: 25rem;
     max-width: 40%;
+
     img {
       width: 100%;
       height: auto;
@@ -196,19 +253,39 @@ main {
     }
   }
 }
-/* Responsive */
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
   main {
+    padding: 8rem 0 0 0;
     flex-direction: column;
     min-height: calc(100vh - 20rem);
   }
+
   .project-content {
-    flex: 1;
     flex-direction: column;
     align-items: center;
-  }
-  .project-activities {
-    flex: 1;
   }
 
   .project-image {
@@ -218,18 +295,6 @@ main {
   .project-info {
     text-align: center;
     padding: 15px;
-  }
-}
-
-/* Fade-in effect */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 </style>

@@ -35,23 +35,28 @@ onMounted(async () => {
 
 <template>
   <Navbar />
-  <h1>Empresas</h1>
+  <main>
+    <h1>Empresas</h1>
 
-  <div v-if="loading" class="loading">
-    <p>Cargando empresas...</p>
-  </div>
+    <div v-if="loading" class="loading">
+      <p>Cargando empresas...</p>
+    </div>
 
-  <div class="companies">
-    <CompanyCard
-      v-for="empresa in companies"
-      :key="empresa.id"
-      :company="empresa"
-    />
-  </div>
+    <div class="companies">
+      <CompanyCard
+        v-for="empresa in companies"
+        :key="empresa.id"
+        :company="empresa"
+      />
+    </div>
+  </main>
   <Footer />
 </template>
 
 <style lang="scss" scoped>
+main {
+  padding: 14rem 0 0 0;
+}
 h1 {
   text-align: center;
   font-size: 3rem;
@@ -73,6 +78,9 @@ h1 {
   justify-content: center;
 }
 @media screen and (max-width: 768px) {
+  main {
+    padding: 8rem 0 0 0;
+  }
   h1 {
     font-size: 2rem;
   }

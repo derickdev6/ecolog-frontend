@@ -36,24 +36,29 @@ onMounted(async () => {
 
 <template>
   <Navbar />
-  <h1>Proyectos</h1>
+  <main>
+    <h1>Proyectos</h1>
 
-  <div v-if="loading" class="loading">
-    <p>Cargando proyectos...</p>
-  </div>
+    <div v-if="loading" class="loading">
+      <p>Cargando proyectos...</p>
+    </div>
 
-  <div class="projects">
-    <ProjectItem
-      v-for="project in projects"
-      :key="project.id"
-      :project="project"
-    />
-  </div>
-  <ControlButtons />
+    <div class="projects">
+      <ProjectItem
+        v-for="project in projects"
+        :key="project.id"
+        :project="project"
+      />
+    </div>
+    <ControlButtons />
+  </main>
   <Footer />
 </template>
 
 <style scoped lang="scss">
+main {
+  padding: 14rem 0 0 0;
+}
 h1 {
   text-align: center;
   font-size: 3rem;
@@ -73,6 +78,9 @@ h1 {
   align-items: center;
 }
 @media screen and (max-width: 768px) {
+  main {
+    padding: 8rem 0 0 0;
+  }
   h1 {
     font-size: 2rem;
   }

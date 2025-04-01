@@ -13,11 +13,10 @@ import Footer from "@/components/layout/Footer.vue";
 
 <style lang="scss" scoped>
 .container {
-  height: calc(100vh - 25rem);
+  height: calc(100vh - 11rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-top: 2rem;
   text-align: center;
 }
 </style>

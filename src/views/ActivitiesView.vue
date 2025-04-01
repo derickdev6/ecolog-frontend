@@ -34,25 +34,30 @@ onMounted(async () => {
 
 <template>
   <Navbar />
-  <h1>Actividades</h1>
+  <main>
+    <h1>Actividades</h1>
 
-  <div v-if="loading" class="loading">
-    <p>Cargando actividades...</p>
-  </div>
+    <div v-if="loading" class="loading">
+      <p>Cargando actividades...</p>
+    </div>
 
-  <div v-else class="activities">
-    <ActivityItem
-      v-for="activity in activities"
-      :key="activity.id"
-      :activity="activity"
-    />
-  </div>
+    <div v-else class="activities">
+      <ActivityItem
+        v-for="activity in activities"
+        :key="activity.id"
+        :activity="activity"
+      />
+    </div>
 
-  <ControlButtons />
+    <ControlButtons />
+  </main>
   <Footer />
 </template>
 
 <style scoped lang="scss">
+main {
+  padding: 14rem 0 0 0;
+}
 h1 {
   text-align: center;
   font-size: 3rem;
@@ -72,6 +77,9 @@ h1 {
   align-items: center;
 }
 @media screen and (max-width: 768px) {
+  main {
+    padding: 8rem 0 0 0;
+  }
   h1 {
     font-size: 2rem;
   }
