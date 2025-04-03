@@ -40,7 +40,14 @@ const goToDetail = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <img :src="`/src/assets/icons/${social.name}.png`" :alt="social.name" />
+        <img
+          :src="
+            social.name === 'facebook'
+              ? 'https://cdn.brandfetch.io/facebook.com/w/512/h/512/symbol?c=1idsDWy9UK45loOuUIq'
+              : 'https://cdn.brandfetch.io/instagram.com/w/512/h/512/theme/light/symbol?c=1idsDWy9UK45loOuUIq'
+          "
+          :alt="social.name"
+        />
       </a>
     </div>
   </div>
@@ -110,8 +117,9 @@ const goToDetail = () => {
     }
 
     img {
-      width: 5rem;
-      height: 5rem;
+      padding: 0.5rem;
+      width: 3rem;
+      // height: 5rem;
     }
   }
 }

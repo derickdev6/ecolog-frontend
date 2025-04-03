@@ -89,7 +89,11 @@ onMounted(async () => {
               target="_blank"
             >
               <img
-                :src="`/src/assets/icons/${social.name}.png`"
+                :src="
+                  social.name === 'facebook'
+                    ? 'https://cdn.brandfetch.io/facebook.com/w/512/h/512/symbol?c=1idsDWy9UK45loOuUIq'
+                    : 'https://cdn.brandfetch.io/instagram.com/w/512/h/512/theme/light/symbol?c=1idsDWy9UK45loOuUIq'
+                "
                 :alt="social.name"
               />
             </a>
@@ -196,7 +200,7 @@ main {
   .company-links {
     display: flex;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 1rem;
 
     a {
       display: flex;
@@ -209,8 +213,8 @@ main {
       }
 
       img {
-        width: 4rem;
-        height: 4rem;
+        padding: 0.5rem;
+        width: 3rem;
       }
     }
   }
