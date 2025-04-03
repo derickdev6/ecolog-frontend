@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: ecolog-frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_BACKEND_IP
+        value: YOUR_BACKEND_URL
+      - key: VITE_BACKEND_PORT
+        value: YOUR_BACKEND_PORT 
